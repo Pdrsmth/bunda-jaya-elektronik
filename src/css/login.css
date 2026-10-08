@@ -1,0 +1,162 @@
+@keyframes rotateBg {
+  100% {
+    background-position: 15% 50%;
+  }
+}
+
+.login-wrapper {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0 24px;
+  background-image: url("./background.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* Use app's font */
+  font-family: var(--font-sans); 
+  color: #000;
+  animation: rotateBg 6s infinite alternate linear;
+}
+
+@media (min-width: 500px) {
+  .login-wrapper {
+    padding: 0;
+  }
+}
+
+.login-card {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  margin: 0 20px;
+  padding: 70px 30px 44px;
+  border-radius: 1.25rem;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+@media (min-width: 500px) {
+  .login-card {
+    margin: 0;
+    width: 400px;
+  }
+}
+
+.login-card > .login-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.login-card > h2 {
+  font-size: 24px; /* Scaled down slightly for POS feel */
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--slate-900);
+}
+
+.login-card > h3 {
+  color: var(--slate-500);
+  margin: 0 0 30px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.login-form {
+  width: 100%;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.login-form > .input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 8px;
+}
+
+.login-form > .input-group > label {
+  color: var(--slate-700);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.login-form > .input-group > input {
+  border: 2px solid var(--slate-200);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 0 16px;
+  height: 50px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.login-form > .input-group > input:focus {
+  border-color: var(--cobalt-500);
+}
+
+.login-form > button {
+  cursor: pointer;
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border-radius: 0.5rem;
+  background: var(--cobalt-600);
+  color: #fff;
+  border: 0;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.login-form > button:hover:not(:disabled) {
+  background: var(--cobalt-700);
+}
+
+.login-form > button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login-demo-accounts {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--slate-200);
+}
+
+.login-demo-accounts > p {
+  color: var(--slate-500);
+  font-size: 12px;
+  margin: 0 0 10px 0;
+}
+
+.login-demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.login-demo-grid > button {
+  padding: 8px;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--slate-700);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.login-demo-grid > button:hover {
+  background: var(--slate-100);
+  border-color: var(--slate-300);
+}

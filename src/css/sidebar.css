@@ -1,0 +1,427 @@
+/* ============================================================
+   SIDEBAR — floating card style (pop-up, not edge-attached)
+   ============================================================ */
+
+/* ── Reset buttons & labels inside sidebar ─────────────────── */
+.app-sidebar button,
+.app-sidebar label {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── Shell — floating card ──────────────────────────────────── */
+.app-sidebar {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  bottom: 12px;
+  width: 252px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background: rgba(17, 24, 48, 0.82);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 2px  8px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  z-index: 100;
+  transition: width 0.25s ease, opacity 0.25s ease;
+  overflow: hidden;
+}
+
+#app.sidebar-collapsed .app-sidebar {
+  width: 64px;
+}
+
+/* ── Brand header ───────────────────────────────────────────── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+}
+
+.brand-icon-new {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-radius: 10px;
+  font-size: 18px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
+}
+
+.sidebar-brand-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.brand-title-new {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.brand-sub-new {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.38);
+  white-space: nowrap;
+}
+
+/* ── Hamburger inside sidebar header ────────────────────────── */
+.sidebar-hamburger {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.45);
+  transition: background 0.15s, color 0.15s;
+  margin-left: auto;
+}
+
+.sidebar-hamburger:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* When collapsed, hide brand text */
+#app.sidebar-collapsed .brand-title-new,
+#app.sidebar-collapsed .brand-sub-new,
+#app.sidebar-collapsed .sidebar-brand-text {
+  display: none;
+}
+
+/* Collapsed header: just icon + hamburger */
+#app.sidebar-collapsed .sidebar-header {
+  justify-content: space-between;
+  padding: 0 10px;
+  gap: 6px;
+}
+
+#app.sidebar-collapsed .sidebar-hamburger {
+  margin-left: 0;
+}
+
+/* ── Nav scroll container ───────────────────────────────────── */
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+}
+
+.nav > ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 8px 10px;
+  margin: 0;
+  min-height: 100%;
+}
+
+/* ── Section labels ─────────────────────────────────────────── */
+li.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  color: rgba(255, 255, 255, 0.25);
+  padding: 14px 6px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  list-style: none;
+}
+
+#app.sidebar-collapsed li.section-label {
+  height: 1px;
+  padding: 0;
+  margin: 6px 0;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  font-size: 0;
+}
+
+/* ── Shared nav link base ───────────────────────────────────── */
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.58);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  box-sizing: border-box;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+a.nav-link.active {
+  background: rgba(99, 120, 255, 0.22);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(99, 120, 255, 0.30);
+}
+
+/* Active left accent bar */
+a.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 3px;
+  background: #6378ff;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Logout */
+.logout-link {
+  color: rgba(252, 165, 165, 0.65) !important;
+}
+.logout-link:hover {
+  background: rgba(239, 68, 68, 0.10) !important;
+  color: #fca5a5 !important;
+}
+
+/* ── Icon ───────────────────────────────────────────────────── */
+.nav-link .icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ── Label text ─────────────────────────────────────────────── */
+.nav-link .nav-text {
+  flex: 1;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13.5px;
+}
+
+/* ── Chevron ────────────────────────────────────────────────── */
+.nav-link .chevron {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.28);
+  transition: rotate 0.3s ease;
+  margin-left: auto;
+}
+
+/* ── Collapsible group ──────────────────────────────────────── */
+.nav-radio {
+  display: none;
+}
+
+.nav-radio:checked + .nav-link {
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-radio:checked + .nav-link .chevron {
+  rotate: -180deg;
+}
+
+/* Sub-menu slide */
+.sub-menu {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease;
+}
+
+.nav-radio:checked ~ .sub-menu {
+  grid-template-rows: 1fr;
+}
+
+.sub-menu > ul {
+  overflow: hidden;
+  list-style: none;
+  padding: 2px 0;
+  margin: 0;
+}
+
+.sub-menu .nav-link {
+  height: 38px;
+  padding-left: 44px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.sub-menu .nav-link::before {
+  content: '';
+  position: absolute;
+  left: 26px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: background 0.15s;
+}
+
+.sub-menu .nav-link:hover::before,
+.sub-menu a.nav-link.active::before {
+  background: #6378ff;
+}
+
+/* Spacer */
+.nav-spacer {
+  flex: 1;
+  min-height: 12px;
+}
+
+/* ── Collapsed — icons only ─────────────────────────────────── */
+#app.sidebar-collapsed .nav-link {
+  justify-content: center;
+  padding: 0;
+  gap: 0;
+}
+
+#app.sidebar-collapsed .nav-link .nav-text,
+#app.sidebar-collapsed .nav-link .chevron,
+#app.sidebar-collapsed .sub-menu {
+  display: none;
+}
+
+#app.sidebar-collapsed .nav-link .icon {
+  width: 22px;
+  height: 22px;
+}
+
+#app.sidebar-collapsed .nav-link .icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+#app.sidebar-collapsed li.section-label {
+  height: 1px;
+  padding: 0;
+  margin: 4px 8px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+  font-size: 0;
+}
+
+/* ── User footer ────────────────────────────────────────────── */
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 0 0 20px 20px;
+  flex-shrink: 0;
+}
+
+.user-avatar-new {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.user-info-new {
+  min-width: 0;
+  flex: 1;
+}
+
+.user-name-new {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role-new {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+}
+
+#app.sidebar-collapsed .user-info-new {
+  display: none;
+}
+
+/* ── app-main offset ────────────────────────────────────────── */
+.app-main {
+  /* 12px gap + 252px sidebar + 12px inner gap */
+  margin-left: 276px;
+  transition: margin-left 0.25s ease;
+}
+
+#app.sidebar-collapsed .app-main {
+  margin-left: 88px;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .app-sidebar {
+    top: 12px;
+    bottom: 12px;
+    left: 12px;
+    transform: translateX(calc(-100% - 16px));
+    transition: transform 0.25s ease;
+  }
+  #app.sidebar-open .app-sidebar {
+    transform: translateX(0);
+  }
+  .app-main {
+    margin-left: 0 !important;
+  }
+}

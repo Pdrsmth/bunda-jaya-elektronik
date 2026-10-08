@@ -1,0 +1,2 @@
+# Blokir akses web langsung ke file database (.sql berisi hash password & struktur DB)
+Require all denied

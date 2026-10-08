@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API - Bunda Jaya Elektronik</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+        .section h2 {
+            font-size: 16px;
+            color: #334155;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        button.success {
+            background: #10b981;
+        }
+        button.success:hover {
+            background: #059669;
+        }
+        button.danger {
+            background: #ef4444;
+        }
+        button.danger:hover {
+            background: #dc2626;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        input {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        .response {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 15px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 API Testing Dashboard</h1>
+        <p class="subtitle">Bunda Jaya Elektronik - Backend REST API</p>
+
+        <!-- Authentication -->
+        <div class="section">
+            <h2>🔐 Authentication <span id="auth-status" class="status pending">Not Logged In</span></h2>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Username" value="owner">
+                <input type="password" id="password" placeholder="Password" value="password123">
+                <button onclick="login()">Login</button>
+                <button class="danger" onclick="logout()">Logout</button>
+                <button onclick="checkSession()">Check Session</button>
+            </div>
+            <div id="auth-response" class="response" style="display:none;"></div>
+        </div>
+
+        <!-- Master Data -->
+        <div class="section">
+            <h2>📦 Master Data</h2>
+            <button class="success" onclick="getKategori()">Get Kategori</button>
+            <button class="success" onclick="getMerek()">Get Merek</button>
+            <button class="success" onclick="getSupplier()">Get Supplier</button>
+            <button class="success" onclick="getBarang()">Get Barang</button>
+            <div id="master-response" class="response" style="display:none;"></div>
+        </div>
+
+        <!-- Transaksi -->
+        <div class="section">
+            <h2>🛒 Transaksi & Pembelian</h2>
+            <button onclick="getTransaksi()">Get Transaksi</button>
+            <button onclick="getPembelian()">Get Pembelian</button>
+            <button onclick="getHutang()">Get Hutang</button>
+            <div id="transaksi-response" class="response" style="display:none;"></div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="section">
+            <h2>📊 Dashboard & Laporan</h2>
+            <button onclick="getDashboard()">Dashboard Metrics</button>
+            <button onclick="getChart()">Chart 7 Hari</button>
+            <button onclick="getLaporanHarian()">Laporan Harian</button>
+            <button onclick="getStokMenipis()">Stok Menipis</button>
+            <div id="dashboard-response" class="response" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost/Bunda%20Jaya%20Elektronik/api';
+
+        async function apiCall(endpoint, method = 'GET', body = null, responseEl = 'auth-response') {
+            try {
+                const options = {
+                    method,
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(`${API_BASE}${endpoint}`, options);
+                const data = await response.json();
+                
+                const el = document.getElementById(responseEl);
+                el.style.display = 'block';
+                el.textContent = JSON.stringify(data, null, 2);
+                
+                return data;
+            } catch (error) {
+                const el = document.getElementById(responseEl);
+                el.style.display = 'block';
+                el.textContent = `ERROR: ${error.message}`;
+                return null;
+            }
+        }
+
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const data = await apiCall('/auth.php?action=login', 'POST', { username, password }, 'auth-response');
+            
+            if (data && data.success) {
+                document.getElementById('auth-status').textContent = `Logged in as ${data.data.user.nama}`;
+                document.getElementById('auth-status').className = 'status success';
+            } else {
+                document.getElementById('auth-status').textContent = 'Login Failed';
+                document.getElementById('auth-status').className = 'status error';
+            }
+        }
+
+        async function logout() {
+            const data = await apiCall('/auth.php?action=logout', 'POST', null, 'auth-response');
+            
+            if (data && data.success) {
+                document.getElementById('auth-status').textContent = 'Not Logged In';
+                document.getElementById('auth-status').className = 'status pending';
+            }
+        }
+
+        async function checkSession() {
+            const data = await apiCall('/auth.php?action=check', 'GET', null, 'auth-response');
+            
+            if (data && data.success) {
+                document.getElementById('auth-status').textContent = `Session active: ${data.data.user.nama}`;
+                document.getElementById('auth-status').className = 'status success';
+            } else {
+                document.getElementById('auth-status').textContent = 'No Active Session';
+                document.getElementById('auth-status').className = 'status pending';
+            }
+        }
+
+        async function getKategori() {
+            await apiCall('/kategori.php', 'GET', null, 'master-response');
+        }
+
+        async function getMerek() {
+            await apiCall('/merek.php', 'GET', null, 'master-response');
+        }
+
+        async function getSupplier() {
+            await apiCall('/supplier.php', 'GET', null, 'master-response');
+        }
+
+        async function getBarang() {
+            await apiCall('/barang.php', 'GET', null, 'master-response');
+        }
+
+        async function getTransaksi() {
+            await apiCall('/transaksi.php', 'GET', null, 'transaksi-response');
+        }
+
+        async function getPembelian() {
+            await apiCall('/pembelian.php', 'GET', null, 'transaksi-response');
+        }
+
+        async function getHutang() {
+            await apiCall('/hutang.php', 'GET', null, 'transaksi-response');
+        }
+
+        async function getDashboard() {
+            await apiCall('/dashboard.php?action=metrics', 'GET', null, 'dashboard-response');
+        }
+
+        async function getChart() {
+            await apiCall('/dashboard.php?action=chart-7hari', 'GET', null, 'dashboard-response');
+        }
+
+        async function getLaporanHarian() {
+            const today = new Date().toISOString().split('T')[0];
+            await apiCall(`/dashboard.php?action=penjualan-harian&tanggal=${today}`, 'GET', null, 'dashboard-response');
+        }
+
+        async function getStokMenipis() {
+            await apiCall('/dashboard.php?action=stok-menipis', 'GET', null, 'dashboard-response');
+        }
+
+        // Auto check session on load
+        window.onload = () => {
+            checkSession();
+        };
+    </script>
+</body>
+</html>

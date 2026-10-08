@@ -1,0 +1,97 @@
+/* Thermal Receipt View & Print CSS - Bunda Jaya Elektronik */
+
+.receipt-preview-container {
+  background-color: #fff;
+  border: 1px solid var(--slate-300);
+  box-shadow: var(--shadow-md);
+  width: 320px; /* Standard 80mm thermal printer scale */
+  margin: 0 auto;
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #000;
+  line-height: 1.4;
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed #000;
+  padding-bottom: 8px;
+}
+
+.receipt-store-title {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.receipt-meta {
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+
+.receipt-meta-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.receipt-divider {
+  border-top: 1px dashed #000;
+  margin: 8px 0;
+}
+
+.receipt-items {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.receipt-item-name {
+  font-weight: 700;
+}
+
+.receipt-item-calc {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 8px;
+}
+
+.receipt-summary-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.receipt-summary-line.total {
+  font-size: 14px;
+  font-weight: 800;
+  margin: 4px 0;
+}
+
+.receipt-footer {
+  text-align: center;
+  margin-top: 12px;
+  border-top: 1px dashed #000;
+  padding-top: 8px;
+  font-size: 10px;
+}
+
+/* Printer Media Queries */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #receipt-modal-content, #receipt-modal-content * {
+    visibility: visible;
+  }
+  #receipt-modal-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

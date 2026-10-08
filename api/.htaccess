@@ -1,0 +1,34 @@
+# API .htaccess Configuration
+# Enable rewrite engine
+RewriteEngine On
+
+# Allow CORS preflight requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# Production: JANGAN tampilkan error PHP ke browser (bocor ke response JSON & user)
+php_flag display_errors Off
+php_flag display_startup_errors Off
+php_flag log_errors On
+
+# Set max execution time
+php_value max_execution_time 300
+
+# Set memory limit
+php_value memory_limit 256M
+
+# Allow access to API files
+<FilesMatch "\.(php)$">
+    Require all granted
+</FilesMatch>
+
+# Disable directory listing but allow file access
+Options -Indexes +FollowSymLinks
+
+# Set default character encoding
+AddDefaultCharset UTF-8
+
+# Allow .php files to be executed
+<IfModule mod_php7.c>
+    php_flag engine on
+</IfModule>

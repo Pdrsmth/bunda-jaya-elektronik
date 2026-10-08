@@ -45,8 +45,6 @@ Aplikasi web untuk mengelola **toko elektronik**: kasir (POS), stok barang, pemb
 
 ## 🖼️ Preview
 
-> Ganti file di bawah dengan screenshot asli aplikasimu.
-
 | Dashboard | Kasir POS |
 |-----------|-----------|
 | ![Dashboard](docs/screenshot-dashboard.png) | ![POS](docs/screenshot-pos.png) |

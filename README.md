@@ -62,7 +62,7 @@ Aplikasi web untuk mengelola **toko elektronik**: kasir (POS), stok barang, pemb
 
 ### 1. Clone repository
 ```bash
-git clone https://github.com/username/bunda-jaya-elektronik.git
+git clone https://github.com/Pdrsmth/bunda-jaya-elektronik.git
 cd bunda-jaya-elektronik
 ```
 

@@ -468,8 +468,10 @@ body {
   .app-sidebar .brand-text,
   .app-sidebar .user-details { display: block; }
 
-  /* Overlay for mobile */
-  #app:not(.sidebar-collapsed)::before {
+  /* Overlay for mobile — hanya tampil saat drawer sidebar benar-benar terbuka.
+     (Dulu: #app:not(.sidebar-collapsed) yang di mobile selalu true,
+     sehingga overlay menutupi seluruh layar termasuk halaman login.) */
+  #app.sidebar-open::before {
     content: '';
     position: fixed;
     top: 0;

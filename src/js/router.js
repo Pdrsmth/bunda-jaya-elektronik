@@ -165,6 +165,9 @@ async function handleRoute() {
     const headerEl = document.getElementById('app-header');
     const appMainEl = document.querySelector('.app-main');
     const contentEl = document.getElementById('app-content');
+    // Pastikan overlay drawer mobile tidak nyangkut di halaman login
+    const appEl = document.getElementById('app');
+    if (appEl) appEl.classList.remove('sidebar-open');
 
     if (sidebarEl) sidebarEl.style.display = 'none';
     if (headerEl) headerEl.style.display = 'none';
